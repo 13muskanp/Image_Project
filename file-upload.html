@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title> File-upload </title>
+
+        <link
+        rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        />
+
+       
+
+    </head>
+
+    <body>
+        
+
+
+
+        <h2>Image upload</h2>
+        <input type="file" id="photo">
+        <img id = "image"/>
+        <input id="uploadbtn" type="button" onclick="uploadimage()" value="upload image"/>
+
+
+    </body>
+            <!-- The core Firebase JS SDK is always required and must be listed first -->
+          <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
+          <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-storage.js"></script>
+          <!-- TODO: Add SDKs for Firebase products that you want to use
+          https://firebase.google.com/docs/web/setup#available-libraries -->
+
+          <script>
+              // Your web app's Firebase configuration
+              var firebaseConfig = {
+              apiKey: "AIzaSyB7TZnRZDFwpeZGcIxcvDE-hJquzP4U9Fk",
+              authDomain: "newpro2-790b5.firebaseapp.com",
+              databaseURL: "https://newpro2-790b5.firebaseio.com",
+              projectId: "newpro2-790b5",
+              storageBucket: "newpro2-790b5.appspot.com",
+              messagingSenderId: "81549790576",
+              appId: "1:81549790576:web:74e82487a825819a4dd3b5"
+              };
+              // Initialize Firebase
+              firebase.initializeApp(firebaseConfig);
+              console.log(firebase)
+
+              function uploadimage(){
+                const ref = firebase.storage().ref() //ref to storage bucket
+
+                const file = document.querySelector("#photo").files[0]//get document using array
+
+                const name = new Date()+ '-' + file.name  // initalizing file name to store
+
+                const metadata = {
+                  contentType: file.type
+
+
+                }
+
+                const task = ref.child(name).put(file,metadata)
+
+                task
+                .then(snapshot => snapshot.ref.getDownloadURL())
+                .then(url => {
+                  console.log(url)
+                  alert("Image Upload Successful")  //alert
+                  const image = document.querySelector('#image')
+                  image.src = url
+                })
+              }
+          </script>
+           <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script>
+           <script type="text/javascript">
+                $(function (){
+                  $('#uploadbtn').click(function () {
+                    $(this).attr("disabled", true);
+                    $(this).val('Uploaded');
+                    
+                  });
+                });
+           </script>
+           
+           
+</html>
+
